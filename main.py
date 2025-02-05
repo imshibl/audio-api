@@ -26,6 +26,7 @@ def download_audio(url: str, output_format: str):
                 "preferredquality": "192",
             }
         ],
+        "cookiefile": "/etc/secrets/cookies.txt",
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
