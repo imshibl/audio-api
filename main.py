@@ -11,8 +11,6 @@ app = FastAPI()
 DOWNLOAD_FOLDER = os.path.join(os.path.expanduser("~"), "Downloads")
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
-COOKIES_FILE = os.path.join(DOWNLOAD_FOLDER, "cookies.txt")
-
 
 def download_audio(url: str, output_format: str):
     """Download audio using yt-dlp and convert it."""
@@ -21,6 +19,8 @@ def download_audio(url: str, output_format: str):
     ydl_opts = {
         "format": "bestaudio/best",
         "outtmpl": output_path,
+        "cookiefile": "cookies.txt",
+        "verbose": True,
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -29,9 +29,6 @@ def download_audio(url: str, output_format: str):
             }
         ],
     }
-
-    if os.path.exists(COOKIES_FILE):
-        ydl_opts["cookiefile"] = COOKIES_FILE
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
